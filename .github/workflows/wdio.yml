@@ -54,20 +54,29 @@ jobs:
         run: npm ci
       - name: Run Tests
         run: |
-          if [ "${{ github.event.inputs.testType }}" = "api" ]; then
+          if [ "${{ github.event_name }}" = "push" ]; then
             npm run api:test
-          elif [ "${{ github.event.inputs.testType }}" = "web" ]; then
             if [ "${{ matrix.browser }}" = "chrome" ]; then
               npm run wdio:chrome
             else
               npm run wdio:firefox
             fi
-          elif [ "${{ github.event.inputs.testType }}" = "both" ]; then
-            npm run api:test
-            if [ "${{ matrix.browser }}" = "chrome" ]; then
-              npm run wdio:chrome
-            else
-              npm run wdio:firefox
+          else
+            if [ "${{ github.event.inputs.testType }}" = "api" ]; then
+              npm run api:test
+            elif [ "${{ github.event.inputs.testType }}" = "web" ]; then
+              if [ "${{ matrix.browser }}" = "chrome" ]; then
+                npm run wdio:chrome
+              else
+                npm run wdio:firefox
+              fi
+            elif [ "${{ github.event.inputs.testType }}" = "both" ]; then
+              npm run api:test
+              if [ "${{ matrix.browser }}" = "chrome" ]; then
+                npm run wdio:chrome
+              else
+                npm run wdio:firefox
+              fi
             fi
           fi
       - name: Publish Test Results
