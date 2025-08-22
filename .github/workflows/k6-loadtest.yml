@@ -11,6 +11,7 @@ on:
         required: false
         default: 'api-test/loadtest_create_users.js'
 
+
 jobs:
   run-test:
     runs-on: ubuntu-latest
@@ -23,7 +24,7 @@ jobs:
       - name: Run local k6 test
         uses: grafana/run-k6-action@v1
         with:
-          path: ${{ github.event.inputs.script }}
+          path: ${{ github.event.inputs.script || 'api-test/loadtest_create_users.js' }}
           flags: --out json=summary.json
 
       - name: Upload k6 summary report (JSON)
