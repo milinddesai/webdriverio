@@ -155,7 +155,12 @@ export const config: WebdriverIO.Config = {
     // see also: https://webdriver.io/docs/dot-reporter
     reporters: ['spec',
         // 'junit',
-        ['allure', { outputDir: 'reports/allure-results' }],
+        ['allure', {
+            outputDir: 'reports/allure-results',
+            disableWebdriverStepsReporting: true,
+            disableWebdriverScreenshotsReporting: false,
+
+        }],
         // 'json',
         ['video', {
             videoSlowDownMultiplier: 10
@@ -220,8 +225,9 @@ export const config: WebdriverIO.Config = {
      * @param {Array.<String>} specs        List of spec file paths that are to be run
      * @param {object}         browser      instance of created browser/device session
      */
-    // before: function (capabilities, specs) {
-    // },
+    before: async function () {
+        await browser.setWindowSize(1920, 1080);
+    },
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {string} commandName hook command name

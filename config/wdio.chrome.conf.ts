@@ -1,10 +1,11 @@
 import { config as baseConfig } from './wdio.conf';
 
 const chromeArgs = [
-    '--user-data-dir=/tmp/chrome-tmp',
+    // '--user-data-dir=/tmp/chrome-tmp',
     '--no-sandbox',
     '--disable-infobars',
-    '--window-size=1440,735'
+    '--disable-dev-shm-usage',
+    '--window-size=1440,1080'
 ];
 if (process.env.CI === 'true') {
     chromeArgs.push('--headless', '--disable-gpu');

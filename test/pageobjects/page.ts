@@ -10,7 +10,7 @@ export default class Page {
     * @param path path of the sub page (e.g. /path/to/page.html)
     */
     public open (path: string) {
-        browser.maximizeWindow()
+        process.env.CI ?  browser.setWindowRect(0, 0, 1440, 1080) : browser.maximizeWindow()
         return browser.url(`https://evinova.com/${path}`)
     }
 }
