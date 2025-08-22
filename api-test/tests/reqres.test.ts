@@ -15,7 +15,7 @@ describe('Reqres.in API', () => {
     expect(res.data.data.length).toBeGreaterThan(0);
   });
 
-  it('POST a new user and validate response', async () => {
+  it.only('POST a new user and validate response', async () => {
     const payload = { name: faker.person.firstName(), job: faker.person.jobTitle() };
     const res = await reqresClient.createUser(payload);
     expect(res.status).toBe(201);

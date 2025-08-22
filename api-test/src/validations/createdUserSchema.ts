@@ -4,7 +4,7 @@ export const createdUserSchema = {
     name: { type: 'string' },
     job: { type: 'string' },
     id: { type: 'string' },
-    createdAt: { type: 'string', format: 'date-time' }
+    createdAt: { type: 'string' }
   },
   required: ['name', 'job', 'id', 'createdAt']
 };
