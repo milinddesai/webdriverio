@@ -64,5 +64,3 @@ export function handleSummary(data) {
         "summary.html": htmlReport(data),
     };
 }
-
-
