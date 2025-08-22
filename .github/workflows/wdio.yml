@@ -41,7 +41,7 @@ jobs:
             npm run wdio:chrome
           else
             npm run wdio:firefox
-          
+          fi
       - name: Publish Test Results
         uses: dorny/test-reporter@v2
         with:
