@@ -7,10 +7,20 @@ on:
       - main
   workflow_dispatch:
     inputs:
-      browser:
-        description: 'Browser to run tests on (chrome or firefox)'
+      testType:
+        description: 'Type of test to run (web, api, or both)'
         required: true
         type: choice
+        default: both
+        options:
+          - web
+          - api
+          - both
+      browser:
+        description: 'Browser to run tests on (chrome or firefox)'
+        required: false
+        type: choice
+        default: chrome
         options:
           - chrome
           - firefox
@@ -42,12 +52,23 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm ci
-      - name: Run WebdriverIO tests
+      - name: Run Tests
         run: |
-          if [ "${{ matrix.browser }}" = "chrome" ]; then
-            npm run wdio:chrome
-          else
-            npm run wdio:firefox
+          if [ "${{ github.event.inputs.testType }}" = "api" ]; then
+            npm run api:test
+          elif [ "${{ github.event.inputs.testType }}" = "web" ]; then
+            if [ "${{ matrix.browser }}" = "chrome" ]; then
+              npm run wdio:chrome
+            else
+              npm run wdio:firefox
+            fi
+          elif [ "${{ github.event.inputs.testType }}" = "both" ]; then
+            npm run api:test
+            if [ "${{ matrix.browser }}" = "chrome" ]; then
+              npm run wdio:chrome
+            else
+              npm run wdio:firefox
+            fi
           fi
       - name: Publish Test Results
         uses: dorny/test-reporter@v2
