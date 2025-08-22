@@ -7,7 +7,7 @@
     "wdio": "wdio run ./config/wdio.conf.ts",
     "wdio:chrome": "wdio run ./config/wdio.chrome.conf.ts",
     "wdio:firefox": "wdio run ./config/wdio.firefox.conf.ts",
-    "api-test": "jest",
+    "api:test": "jest",
     "allure:report": "allure generate allure-results --clean -o allure-report && allure open allure-report"
   },
   "keywords": [],
