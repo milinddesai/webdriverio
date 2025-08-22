@@ -1,4 +1,3 @@
-
 # WebdriverIO UI & API Automation (TypeScript)
 
 This project automates both UI and API testing for web applications using [WebdriverIO](https://webdriver.io/) and [Jest](https://jestjs.io/) with TypeScript.
@@ -75,6 +74,37 @@ docker run --rm webdriverio-tests npm run api-test
 ```
 > _Note: You may need to create a `Dockerfile` with Node.js, Chrome/Firefox, and dependencies installed._
 
+
+### Load Testing with k6 & Grafana
+
+You can run load tests against the API using [k6](https://k6.io/). Example script: `api-test/loadtest_create_users.js`.
+
+#### Install k6
+On Linux/macOS:
+```sh
+brew install k6           # macOS
+sudo apt-get install k6   # Ubuntu/Debian
+```
+Or download from [k6 releases](https://github.com/grafana/k6/releases).
+
+On Windows (using Chocolatey):
+```sh
+choco install k6
+```
+
+Run locally:
+```sh
+k6 run -o json=./reports/json-results/loadtest_create_users.json ./api-test/loadtest_create_users.js
+```
+
+#### CI Integration
+A dedicated workflow `.github/workflows/k6-loadtest.yml` allows you to manually trigger k6 load tests from GitHub Actions. It will:
+- Run the specified k6 script (default: `api-test/loadtest_create_users.js`)
+- Upload JUnit results (`junit.xml`) and JSON results as artifacts
+
+To use:
+1. Go to GitHub Actions > K6 Load Test workflow
+2. Click "Run workflow" and specify the script path if needed
 
 ### Project Structure
 - `test/pageobjects/` — Page Object classes
