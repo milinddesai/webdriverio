@@ -41,9 +41,16 @@ jobs:
             npm run wdio:chrome
           else
             npm run wdio:firefox
-          fi
+          
+      - name: Publish Test Results
+        uses: dorny/test-reporter@v2
+        with:
+          artifact: test-results            # artifact name
+          name: JEST Tests                  # Name of the check run which will be created
+          path: './reports/junit/*.xml'     # Path to test results (inside artifact .zip)
+          reporter: jest-junit              # Format of test
       - name: Upload Allure Results
         uses: actions/upload-artifact@v4
         with:
           name: allure_results_${{ matrix.browser }}
-          path: allure-results/
+          path: ./reports/allure-results/

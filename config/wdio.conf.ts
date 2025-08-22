@@ -154,14 +154,23 @@ export const config: WebdriverIO.Config = {
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
     reporters: ['spec',
-        // 'junit',
+        ['junit', {
+            outputDir: 'reports/junit-results',
+            outputFileFormat: function() {
+                return 'results.xml';
+            }
+        }],
         ['allure', {
             outputDir: 'reports/allure-results',
             disableWebdriverStepsReporting: true,
             disableWebdriverScreenshotsReporting: false,
-
         }],
-        // 'json',
+        ['json', {
+            outputDir: 'reports/json-results',
+            outputFileFormat: function() {
+                return 'results.json';
+            }
+        }],
         ['video', {
             videoSlowDownMultiplier: 10
         }]],
