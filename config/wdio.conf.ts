@@ -154,9 +154,23 @@ export const config: WebdriverIO.Config = {
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
     reporters: ['spec',
-        // 'junit',
-        ['allure', { outputDir: 'reports/allure-results' }],
-        // 'json',
+        ['junit', {
+            outputDir: 'reports/junit-results',
+            outputFileFormat: function() {
+                return 'results.xml';
+            }
+        }],
+        ['allure', {
+            outputDir: 'reports/allure-results',
+            disableWebdriverStepsReporting: true,
+            disableWebdriverScreenshotsReporting: false,
+        }],
+        ['json', {
+            outputDir: 'reports/json-results',
+            outputFileFormat: function() {
+                return 'results.json';
+            }
+        }],
         ['video', {
             videoSlowDownMultiplier: 10
         }]],
@@ -220,8 +234,9 @@ export const config: WebdriverIO.Config = {
      * @param {Array.<String>} specs        List of spec file paths that are to be run
      * @param {object}         browser      instance of created browser/device session
      */
-    // before: function (capabilities, specs) {
-    // },
+    before: async function () {
+        await browser.setWindowSize(1920, 1080);
+    },
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {string} commandName hook command name

@@ -33,6 +33,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install dependencies
         run: npm ci
       - name: Run WebdriverIO tests
@@ -42,8 +49,14 @@ jobs:
           else
             npm run wdio:firefox
           fi
+      - name: Publish Test Results
+        uses: dorny/test-reporter@v2
+        with:
+          name: Tests Results                  # Name of the check run which will be created
+          path: './reports/junit-results/*.xml'     # Path to test results (inside artifact .zip)
+          reporter: jest-junit              # Format of test
       - name: Upload Allure Results
         uses: actions/upload-artifact@v4
         with:
           name: allure_results_${{ matrix.browser }}
-          path: allure-results/
+          path: ./reports/allure-results/
