@@ -1,0 +1,45 @@
+name: K6 Load Test
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      script:
+        description: 'K6 test script to run (relative path)'
+        required: false
+        default: 'api-test/loadtest_create_users.js'
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup K6
+        uses: grafana/setup-k6-action@v1
+      - name: Run local k6 test
+        uses: grafana/run-k6-action@v1
+        with:
+          path: ${{ github.event.inputs.script }}
+          flags: --out json=summary.json
+          
+      - name: Upload k6 summary report (JSON)
+        uses: actions/upload-artifact@v3
+        with:
+          name: k6-summary-report-json
+          path: summary.json
+
+      - name: Upload k6 summary report (HTML)
+        uses: actions/upload-artifact@v3
+        with:
+          name: k6-summary-report-html
+          path: summary.html
+
+      - name: Upload k6 summary report (Text)
+        uses: actions/upload-artifact@v3
+        with:
+          name: k6-summary-report-text
+          path: stdout.txt
